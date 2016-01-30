@@ -1,29 +1,53 @@
-plugins {
-    id "com.jfrog.bintray" version "1.4"
-}
-
-apply plugin: 'com.android.library'
-
-Properties props = new Properties()
-props.load(new FileInputStream("$project.rootDir/utils/bintray.properties"))
-
-bintray {
-    user = props.user
-    key = props.api
-    pkg {
-        repo = 'maven'
-        name = 'InoRest'
-        userOrg = 'Inotekk'
-        licenses = ['MIT']
-        vcsUrl = 'https://github.com/jaumard/inorest'
-        version {
-            name = '1.0.0'
-            desc = 'InoRest 1.0.0 version'
-            released  = new Date()
-            vcsTag = '1.0.0'
-        }
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
     }
 }
+
+plugins {
+    id "com.jfrog.bintray" version "1.5"
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+    apply plugin: 'com.android.library'
+    apply plugin: 'com.github.dcendents.android-maven'
+}
+
+group = 'com.inotekk.utils' // Change this to match your package name
+version = '1.0.0' // Change this to match your version number
+/*
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            name 'InoRest'
+            description 'A REST library for Android'
+            url 'https://github.com/jaumard/inorest'
+            inceptionYear '2016'
+
+            packaging 'aar'
+            groupId 'com.inotekk.utils'
+            artifactId 'InoRest'
+            version '1.0.0'
+
+            developers {
+                developer {
+                    name 'Jaumard'
+                }
+            }
+        }
+    }
+}*/
+
+Properties props = new Properties()
+props.load(new FileInputStream("$project.rootDir/inorest/bintray.properties"))
 
 android {
     compileSdkVersion 23
@@ -33,7 +57,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
     }
     buildTypes {
         release {
@@ -43,17 +67,25 @@ android {
     }
 }
 
-// This is the actual solution, as in Page on stackoverflow.com
-task clearJar(type: Delete) {
-    delete 'build/libs/myCompiledLibrary.jar'
+
+bintray {
+    user = props.user
+    key = props.api
+    pkg {
+        repo = 'maven'
+        name = 'InoRest'
+        userOrg = 'jaumard'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/jaumard/inorest'
+        version {
+            name = '1.0.0'
+            desc = 'InoRest 1.0.0 version'
+            vcsTag = '1.0.0'
+        }
+    }
+    configurations = ['archives']
 }
 
-task makeJar(type: Copy) {
-    from('build/bundles/release/')
-    into('build/libs/')
-    include('classes.jar')
-    rename ('classes.jar', 'myCompiledLibrary.jar')
-}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -64,4 +96,27 @@ dependencies {
             [group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.7.0'],
             [group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.7.0']
     )
+}
+
+task generateSourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier 'sources'
+}
+
+task generateJavadocs(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath()
+            .join(File.pathSeparator))
+}
+
+task generateJavadocsJar(type: Jar) {
+    from generateJavadocs.destinationDir
+    classifier 'javadoc'
+}
+
+generateJavadocsJar.dependsOn generateJavadocs
+
+artifacts {
+    archives generateJavadocsJar
+    archives generateSourcesJar
 }
