@@ -22,29 +22,7 @@ allprojects {
 }
 
 group = 'com.inotekk.utils' // Change this to match your package name
-version = '1.0.0' // Change this to match your version number
-/*
-install {
-    repositories.mavenInstaller {
-        pom.project {
-            name 'InoRest'
-            description 'A REST library for Android'
-            url 'https://github.com/jaumard/inorest'
-            inceptionYear '2016'
-
-            packaging 'aar'
-            groupId 'com.inotekk.utils'
-            artifactId 'InoRest'
-            version '1.0.0'
-
-            developers {
-                developer {
-                    name 'Jaumard'
-                }
-            }
-        }
-    }
-}*/
+version = '1.0.1' // Change this to match your version number
 
 Properties props = new Properties()
 props.load(new FileInputStream("$project.rootDir/inorest/bintray.properties"))
@@ -54,10 +32,10 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 17
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0.0"
+        versionName version
     }
     buildTypes {
         release {
@@ -78,9 +56,9 @@ bintray {
         licenses = ['MIT']
         vcsUrl = 'https://github.com/jaumard/inorest'
         version {
-            name = '1.0.0'
-            desc = 'InoRest 1.0.0 version'
-            vcsTag = '1.0.0'
+            name = version
+            desc = 'InoRest 1.0.1 version'
+            vcsTag = version
         }
     }
     configurations = ['archives']
