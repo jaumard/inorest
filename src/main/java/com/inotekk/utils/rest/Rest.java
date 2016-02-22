@@ -197,6 +197,30 @@ public class Rest
 	}
 
 	/**
+	 *
+	 * @param url url or sub url to send data
+	 * @param params Params to send
+	 * @param todo handlers
+	 * @return RequestHandle
+	 */
+	public RequestHandle get(String url, RequestParams params, HttpTodoHandler todo)
+	{
+		return this.get(url, params, null, todo);
+	}
+
+	/**
+	 *
+	 * @param url url or sub url to send data
+	 * @param params Params to send
+	 * @param todo handlers
+	 * @return RequestHandle
+	 */
+	public RequestHandle get(int url, RequestParams params, HttpTodoHandler todo)
+	{
+		return this.get(this.context.getString(url), params, null, todo);
+	}
+
+	/**
 	 * Make get request
 	 * @param url url or sub url to send data
 	 * @param todo handlers
@@ -215,7 +239,7 @@ public class Rest
 	 */
 	public RequestHandle get(int url, HttpTodoHandler todo)
 	{
-		return this.get(context.getString(url), null, todo);
+		return this.get(context.getString(url), null, null, todo);
 	}
 
 	/**

@@ -12,7 +12,7 @@ public abstract class HttpPlainTodoHandler extends HttpTodoHandler<String>
 	 * Success callback, need to overridden
 	 * @param response as text
 	 */
-	public abstract void onSuccess(String response);
+	public abstract void onSuccess(String response, Header[] headers);
 
 	/**
 	 * Failure callback, need to overridden
@@ -28,7 +28,7 @@ public abstract class HttpPlainTodoHandler extends HttpTodoHandler<String>
 		try
 		{
 			dataStr = new String(data, "UTF-8").trim();
-			this.onSuccess(dataStr);
+			this.onSuccess(dataStr, headers);
 		}
 		catch (UnsupportedEncodingException e)
 		{

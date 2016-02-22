@@ -22,7 +22,7 @@ public abstract class HttpTodoHandler<T extends Object> extends AsyncHttpRespons
 	 * Success callback
 	 * @param response as T object
 	 */
-	public abstract void onSuccess(T response);
+	public abstract void onSuccess(T response, Header[] headers);
 
 	/**
 	 * Failure callback, need to overridden
@@ -41,7 +41,7 @@ public abstract class HttpTodoHandler<T extends Object> extends AsyncHttpRespons
 
 			if (dataStr.isEmpty())
 			{
-				this.onSuccess((T) null);
+				this.onSuccess((T) null, headers);
 			}
 			else
 			{
@@ -62,7 +62,7 @@ public abstract class HttpTodoHandler<T extends Object> extends AsyncHttpRespons
 					toFollow = mapper.readValue(dataStr, type);
 				}
 
-				this.onSuccess((T) toFollow);
+				this.onSuccess((T) toFollow, headers);
 			}
 		}
 		catch (UnsupportedEncodingException e)
