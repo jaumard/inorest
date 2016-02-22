@@ -179,8 +179,21 @@ public class Rest
 	 */
 	public RequestHandle get(String url, Map<String, String> headers, HttpTodoHandler todo)
 	{
+		return this.get(url, null, headers, todo);
+	}
+
+	/**
+	 *
+	 * @param url url or sub url to send data
+	 * @param params Params to send
+	 * @param headers to add to the request
+	 * @param todo handlers
+	 * @return RequestHandle
+	 */
+	public RequestHandle get(String url, RequestParams params, Map<String, String> headers, HttpTodoHandler todo)
+	{
 		this.manageHeaders(headers);
-		return client.get(url, todo);
+		return client.get(url, params, todo);
 	}
 
 	/**
@@ -191,7 +204,7 @@ public class Rest
 	 */
 	public RequestHandle get(String url, HttpTodoHandler todo)
 	{
-		return this.get(getUrl(url), null, todo);
+		return this.get(getUrl(url), null, null, todo);
 	}
 
 	/**
