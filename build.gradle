@@ -22,7 +22,7 @@ allprojects {
 }
 
 group = 'com.inotekk.utils' // Change this to match your package name
-version = '1.0.5' // Change this to match your version number
+version = '1.0.6' // Change this to match your version number
 
 Properties props = new Properties()
 props.load(new FileInputStream("$project.rootDir/inorest/bintray.properties"))
@@ -58,7 +58,7 @@ bintray {
         version {
             name = version
             desc = 'InoRest '+version+' version'
-            vcsTag = version
+            vcsTag = 'v'+version
         }
     }
     configurations = ['archives']
