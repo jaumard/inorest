@@ -6,7 +6,7 @@ import java.io.UnsupportedEncodingException;
 
 import cz.msebera.android.httpclient.Header;
 
-public abstract class HttpPlainTodoHandler extends HttpTodoHandler<String>
+public abstract class HttpPlainTodoHandler extends HttpTodoHandler<String, String>
 {
 	/**
 	 * Success callback, need to overridden

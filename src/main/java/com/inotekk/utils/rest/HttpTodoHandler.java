@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
 
-public abstract class HttpTodoHandler<T extends Object> extends AsyncHttpResponseHandler
+public abstract class HttpTodoHandler<T extends Object, E extends Object> extends AsyncHttpResponseHandler
 {
 	/**
 	 * Success callback
@@ -27,9 +27,35 @@ public abstract class HttpTodoHandler<T extends Object> extends AsyncHttpRespons
 	/**
 	 * Failure callback, need to overridden
 	 * @param code error code
-	 * @param msg error message
+	 * @param error error message
 	 */
-	public abstract void onFailure(int code, String msg);
+	public abstract void onFailure(int code, E error);
+
+	private Object parseResponse(String json, Class<?> type) throws IOException
+	{
+		Object toFollow = null;
+
+		try
+		{
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);//Not fail on unknown fields
+
+			if (type == null)
+			{
+				toFollow = mapper.readValue(json, new TypeReference<HashMap<String, String>>()
+				{
+				});
+			}
+			else
+			{
+				toFollow = mapper.readValue(json, type);
+			}
+		}
+		catch (Exception e){
+			throw e;
+		}
+		return toFollow;
+	}
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -46,23 +72,9 @@ public abstract class HttpTodoHandler<T extends Object> extends AsyncHttpRespons
 			else
 			{
 				Rest.log(Log.INFO, code + " : " + dataStr);
-				ObjectMapper mapper = new ObjectMapper();
-				mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);//Not fail on unknown fields
 				Class<?> type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-				Object toFollow;
 
-				if (type == null)
-				{
-					toFollow = mapper.readValue(dataStr, new TypeReference<HashMap<String, String>>()
-					{
-					});
-				}
-				else
-				{
-					toFollow = mapper.readValue(dataStr, type);
-				}
-
-				this.onSuccess((T) toFollow, headers);
+				this.onSuccess((T) this.parseResponse(dataStr, type), headers);
 			}
 		}
 		catch (UnsupportedEncodingException e)
@@ -92,24 +104,23 @@ public abstract class HttpTodoHandler<T extends Object> extends AsyncHttpRespons
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void onFailure(int code, Header[] headers, byte[] data, Throwable arg3)
 	{
 		String error = null;
 		try
 		{
 			String dataStr = new String(data, "UTF-8").trim();
-
 			Rest.log(Log.INFO, code + " : " + dataStr);
-			ObjectMapper mapper = new ObjectMapper();
-			HashMap errorObj = mapper.readValue(data, HashMap.class);
-			error = (String) errorObj.get("error");
+			Class<?> type = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+
+			this.onFailure(code, (E) this.parseResponse(dataStr, type));
 		}
 		catch (Exception e)
 		{
 			Rest.log(Log.ERROR, manageException(e));
+			this.onFailure(-1, null);
 		}
-		Rest.log(Log.ERROR, "No connexion or timeout " + error);
-		this.onFailure(code, error);
 	}
 
 	protected String manageException(Exception e){

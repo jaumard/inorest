@@ -10,6 +10,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.SyncHttpClient;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
@@ -19,6 +20,7 @@ import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 
 /**
  * Created by jaumard on 27/01/2016.
+ *
  */
 public class Rest
 {
@@ -32,8 +34,8 @@ public class Rest
 
 	/**
 	 * Create Rest object
-	 * @param context
-	 * @param rootURL
+	 * @param context use to send request
+	 * @param rootURL of the rest api
 	 */
 	public Rest(Context context, String rootURL)
 	{
@@ -41,6 +43,26 @@ public class Rest
 		this.client.setCookieStore(this.myCookieStore);
 		this.context = context;
 		this.rootURL = rootURL;
+	}
+
+	/**
+	 * Activate sync mode or not
+	 * @param sync boolean to activate sync mode or not
+	 * @return Rest instance to chain call
+	 */
+	public Rest setSync(boolean sync){
+		if(sync){
+			if(this.client.getClass().equals(AsyncHttpClient.class)) {
+				SyncHttpClient syncclient = new SyncHttpClient();
+
+			}
+		}
+		else{
+			if(this.client.getClass().equals(SyncHttpClient.class)) {
+				client = new AsyncHttpClient();
+			}
+		}
+		return this;
 	}
 
 	/**
@@ -53,8 +75,8 @@ public class Rest
 	}
 
 	/**
-	 * Get Rest singleton
-	 * @return Rest singleton to chain call
+	 * Get Rest instance
+	 * @return Rest instance to chain call
 	 */
 	public static Rest i()
 	{
@@ -62,10 +84,10 @@ public class Rest
 	}
 
 	/**
-	 * Get Rest singleton
-	 * @param context
-	 * @param rootURL
-	 * @return Rest
+	 * Get Rest instance
+	 * @param context use to send request
+	 * @param rootURL of the rest api
+	 * @return Rest instance to chain call
 	 */
 	public static Rest getSingleton(Context context, String rootURL)
 	{
@@ -78,10 +100,10 @@ public class Rest
 	}
 
 	/**
-	 * Init Rest singleton object
-	 * @param context
-	 * @param rootURL
-	 * @return Rest
+	 * Init Rest instance object
+	 * @param context use to send request
+	 * @param rootURL of the rest api
+	 * @return Rest instance to chain call
 	 */
 	public static Rest init(Context context, String rootURL)
 	{
@@ -139,8 +161,8 @@ public class Rest
 	}
 
 	/**
-	 *
-	 * @param part
+	 * Build final URL
+	 * @param part url or part or url to concat with rootURL
 	 * @return full URL
 	 */
 	private String getUrl(String part){
@@ -522,7 +544,7 @@ public class Rest
 
 	/**
 	 *
-	 * @return
+	 * @return Context current context
 	 */
 	public Context getContext()
 	{
@@ -531,8 +553,8 @@ public class Rest
 
 	/**
 	 * Set context
-	 * @param context
-	 * @return Rest singleton to chain call
+	 * @param context to change
+	 * @return Rest instance to chain call
 	 */
 	public Rest context(Context context)
 	{
@@ -551,7 +573,7 @@ public class Rest
 
 	/**
 	 * Set root URL
-	 * @param rootURL
+	 * @param rootURL of the REST API
 	 */
 	public void setRootURL(String rootURL)
 	{
@@ -560,8 +582,8 @@ public class Rest
 
 	/**
 	 * Add a cookie from cookieStore
-	 * @param cookie
-	 * @return Rest singleton to chain call
+	 * @param cookie to add
+	 * @return Rest instance to chain call
 	 */
 	public Rest addCookie(BasicClientCookie cookie){
 		myCookieStore.addCookie(cookie);
@@ -570,8 +592,8 @@ public class Rest
 
 	/**
 	 * Remove a cookie from cookieStore
-	 * @param cookie
-	 * @return Rest singleton to chain call
+	 * @param cookie to remove
+	 * @return Rest instance to chain call
 	 */
 	public Rest removeCookie(BasicClientCookie cookie){
 		myCookieStore.deleteCookie(cookie);
@@ -580,7 +602,7 @@ public class Rest
 
 	/**
 	 * Clear all cookies from cookieStore
-	 * @return Rest singleton to chain call
+	 * @return Rest instance to chain call
 	 */
 	public Rest clearCookies(){
 		myCookieStore.clear();
@@ -590,7 +612,7 @@ public class Rest
 	/**
 	 * Cancel requests for the given context
 	 * @param context of request to cancel
-	 * @return Rest singleton to chain call
+	 * @return Rest instance to chain call
 	 */
 	public Rest cancelRequest(Context context){
 		client.cancelRequests(context, true);
