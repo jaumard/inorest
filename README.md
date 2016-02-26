@@ -2,7 +2,7 @@
 Android REST API
 
 ## Documentation 
-La JavaDoc de cette librairie est disponible sur : https://rawgit.com/jaumard/inorest/javadoc/index.html
+La JavaDoc de cette librairie est disponible sur : https://rawgit.com/jaumard/inorest/tree/master/javadoc/index.html
 
 ## Installation
 
