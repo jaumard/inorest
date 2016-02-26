@@ -2,11 +2,11 @@
 Android REST API
 
 ## Documentation 
-La JavaDoc de cette librairie est disponible sur : https://rawgit.com/jaumard/inorest/tree/master/javadoc/index.html
+La JavaDoc de cette librairie est disponible sur : http://htmlpreview.github.com/?https://github.com/jaumard/inorest/blob/master/javadoc/index.html
 
 ## Installation
 
-Dans le `build.grade`, rajouter dans la section `android` : 
+Dans le `build.gradle`, rajouter dans la section `android` : 
 ```
     packagingOptions {
         exclude 'META-INF/LICENSE'
