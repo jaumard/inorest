@@ -15,7 +15,7 @@ Dans le `build.gradle`, rajouter dans la section `android` :
 ```
 Puis dans vos dépendances : 
 ```
-    compile 'com.inorekk.utils:inorest:1.0.7@aar'
+    compile 'com.inotekk.utils:inorest:1.0.7@aar'
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile(
             [group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.7.0'],
@@ -68,7 +68,7 @@ Les prochains appel sont plus simple :
 ```
 
 `MyBean` et `MyErrorBean` sont des simple classe JAVA représentant les données JSON, le JSON sera automatiquement convertie  en `MyBean` et `MyErrorBean`. Si un problème survient lors de la conversion JSON => Object, la méthode `onFailure` est appelé.
-Raccourcis : ''Rest.getSingleton()'' peux être remplacer par ''Rest.i()''.
+Raccourcis : `Rest.getSingleton()` peux être remplacer par `Rest.i()`.
 
 Les méthodes REST disponibles sont get, post, put, patch, delete, et head. Les appels se font en background et les méthodes `onSuccess` et `onFailure` dans le thread principal.
 
