@@ -15,7 +15,7 @@ Dans le `build.gradle`, rajouter dans la section `android` :
 ```
 Puis dans vos dépendances : 
 ```
-    compile 'com.inorekk.utils:inorest:1.0.5@aar'
+    compile 'com.inorekk.utils:inorest:1.0.7@aar'
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile(
             [group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.7.0'],

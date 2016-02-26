@@ -22,14 +22,14 @@ allprojects {
 }
 
 group = 'com.inotekk.utils' // Change this to match your package name
-version = '1.0.6' // Change this to match your version number
+version = '1.0.7' // Change this to match your version number
 
 Properties props = new Properties()
 props.load(new FileInputStream("$project.rootDir/inorest/bintray.properties"))
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         minSdkVersion 17
