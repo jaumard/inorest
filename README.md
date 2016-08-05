@@ -130,3 +130,8 @@ Rest.i().cancelRequest(myContext)
 ```
 
 Toutes les requêtes associé à `myContext` seront stopper. Pour changer le context il suffit de faire `Rest.i().setContext(newContext)`.
+
+## Support on Beerpay
+Hey dude! Help me out for a couple of :beers:!
+
+[![Beerpay](https://beerpay.io/jaumard/inorest/badge.svg?style=beer-square)](https://beerpay.io/jaumard/inorest)  [![Beerpay](https://beerpay.io/jaumard/inorest/make-wish.svg?style=flat-square)](https://beerpay.io/jaumard/inorest?focus=wish)
