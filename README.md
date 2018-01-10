@@ -1,3 +1,5 @@
+NOT MAINTAINED ANYMORE
+
 # inorest
 Android REST API
 
